@@ -1,0 +1,196 @@
+---
+const { options } = Astro.props;
+
+const optionsPuts = [
+    {
+        input: `table Users {
+    id id
+    name string = "Anon"
+    email string unique index
+    created_at createdAt
+}
+
+get Users {
+    id
+    name
+    email
+    if email = "test@test.com"
+}
+
+new Users {
+    name:  "John Doe"
+    email: "johndoe@test.com"
+}`,
+        output: `CREATE TABLE users (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT DEFAULT "Anon",
+  email TEXT,
+  created_at TEXT DEFAULT datetime('now'),
+  UNIQUE (email)
+);
+
+CREATE INDEX idx_users_email ON users(email);
+
+SELECT
+  users.id as id,
+  users.name as name,
+  users.email as email
+FROM users
+WHERE users.email = "test@test.com";
+
+INSERT INTO \`users\`
+  (name, email)
+VALUES
+  ("John Doe", "johndoe@test.com");
+`,
+    },
+    {
+        input: `table Products {
+    id id
+    name string
+    price float32
+    Categories id
+    in_stock boolean
+}
+
+table Categories {
+    id id
+    name string
+}
+
+get Products {
+    name
+    price
+    total: count(*)
+    group category_id
+    if price > 100
+}`,
+        output: `CREATE TABLE products (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT,
+  price REAL,
+  categories_id INTEGER,
+  in_stock BOOLEAN,
+  FOREIGN KEY (categories_id)
+    REFERENCES categories(id)
+);
+
+CREATE TABLE categories (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT
+);
+
+SELECT
+  products.name as name,
+  products.price as price,
+  (count(*)) as products_total
+FROM products
+GROUP BY products.category_id
+HAVING products.price > 100;`,
+    },
+    {
+        input: `table Users {
+    id id
+    name string
+}
+
+table Orders {
+    id id
+    user_id int
+    total decimal
+}
+
+get Users {
+    name
+    -> Orders foreign_key {
+        total
+        if total > 50
+    }
+}`,
+        output: `CREATE TABLE users (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT
+);
+
+CREATE TABLE orders (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  users_id INTEGER,
+  total REAL,
+  FOREIGN KEY (users_id) REFERENCES users(id)
+);
+
+SELECT
+  users.name as name,
+  orders.total as order_total
+FROM users
+LEFT JOIN orders ON users.orders_id = orders.id
+WHERE orders.total > 50;`,
+    },
+];
+---
+
+<div class="my-12 grid gap-3">
+    <nav
+        class="py-2 grid grid-cols-3 gap-3 items-center justify-center place-content-center"
+    >
+        {
+            options.map((option: string, i: number) => {
+                return (
+                    <label
+                        for={"option-" + i}
+                        class="cursor-pointer px-4 py-2 rounded-md transition-colors duration-200 text-center bg-stone-900 hover:bg-stone-800 font-medium text-white hover:text-white block"
+                    >
+                        <span class="text-center">{option}</span>
+                    </label>
+                );
+            })
+        }
+    </nav>
+    <div class="">
+        {
+            optionsPuts.map(
+                (put: { input: string; output: string }, i: number) => {
+                    return (
+                        <>
+                            <div>
+                                <input
+                                    hidden
+                                    class="peer"
+                                    type="radio"
+                                    name="option"
+                                    id={`option-${i}`}
+                                />
+                                <div class="peer-checked:grid hidden grid-cols-2 gap-4">
+                                    <div>
+                                        <h3 class="bg-stone-950 py-2 px-4">
+                                            <span class="text-primary font-bold">
+                                                .bob
+                                            </span>{" "}
+                                            input
+                                        </h3>
+                                        <pre
+                                            set:html={put.input}
+                                            class="min-h-[408px] w-full text-xs bg-stone-950 p-6 rounded-md text-primary/75"
+                                        />
+                                    </div>
+                                    <div>
+                                        <h3 class="bg-stone-950 py-2 px-4">
+                                            <span class="text-blue-500 font-bold">
+                                                SQLite
+                                            </span>{" "}
+                                            output
+                                        </h3>
+                                        <pre
+                                            set:html={put.output}
+                                            class="min-h-[408px] w-full text-xs bg-stone-950 p-6 rounded-md text-blue-500"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </>
+                    );
+                },
+            )
+        }
+    </div>
+</div>

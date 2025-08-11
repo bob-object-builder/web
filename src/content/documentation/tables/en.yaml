@@ -1,0 +1,33 @@
+notes:
+  - Every column by default is not null
+  - Every column by default is not null
+  - Some types are aliases from another "complex" types for example `id` column is an alias from `int` type with `primaryKey` and `autoIncrement` attributes, and `current` is alias from `date` type with `default` and `now` attributes.
+
+create: |
+  table {table_name} (
+
+    // Columns
+    {column_name} {type} {attributes} ( = {default_value} )
+
+    // Reference must be another table name by default set referenced_column as `iod
+    {table_name} {refereced_column_name}
+  );
+
+example:
+  input: |
+    table Users {
+      id id
+      name string
+      email string unique
+      age int = 0
+      created_at timestamp = @now
+    };
+
+    table Posts {
+      id id,
+      title string
+      content text
+      created_at timestamp = @now
+
+      User
+    };

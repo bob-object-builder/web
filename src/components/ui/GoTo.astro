@@ -1,0 +1,25 @@
+---
+interface Props {
+  variation?: "filled" | "hollow";
+  [key: string]: any;
+}
+
+const { variation, ...props }: Props = Astro.props;
+
+const variationClasses: Record<string, string> = {
+  filled: "bg-primary text-black",
+  hollow: "border-solid border-1 border-primary text-primary",
+};
+
+const selectedClass = variationClasses[variation ?? "hollow"];
+---
+
+<a
+  class:list={[
+    "group transition-transform inline-flex justify-center items-center rounded-md cursor-pointer hover:scale-105 px-6 py-2 font-semibold gap-2",
+    selectedClass,
+  ]}
+  {...props}
+>
+  <slot />
+</a>

@@ -1,0 +1,9 @@
+---
+import MainPage from "@/components/pages/MainPage.astro";
+
+export function getStaticPaths() {
+  return [{ params: { lang: "es" } }];
+}
+---
+
+<MainPage locale={Astro.currentLocale} />

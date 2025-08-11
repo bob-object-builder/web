@@ -1,0 +1,63 @@
+welcome:
+  title: Meet <span class="text-primary">Bob</span>
+  description: A lightweight declarative transpiler that converts <span class="rounded bg-primary/60 border-1 border-primary px-2">bob</span> DSL into SQL code for SQLite, MariaDB, and PostgreSQL. Write less boilerplate, maintain better database logic.
+code: |
+  $ bob -i users.bob -d sqlite -o users.sql <br />
+  ✨ Successfully transpiled users.bob → users.sql <br />
+  🚀 Generated SQL for SQLite database!
+start: Get started
+github:
+  claim: Github
+  href: "https://github.com/bob-object-builder/bob"
+claim:
+  why: Why Choose Bob?
+  answer: Bob combines the simplicity of modern syntax with the power of SQL, giving you the best of both worlds.
+  reasons:
+    - title: Declarative Syntax
+      description: Define tables, fields, relationships, and queries in a clear and human-readable DSL format.
+      icon: CodeIcon
+
+    - title: Multi-Database Support
+      description: Generate SQL for SQLite, MariaDB, and PostgreSQL with a single .bob file.
+      icon: DatabaseIcon
+
+    - title: Easy to Learn
+      description: Bob's syntax is designed to be intuitive and easy to learn, making it accessible to developers of all skill levels.
+      icon: WinkIcon
+
+    - title: Horizontal ORM
+      description: Use Bob as a syntax-driven ORM that integrates with any tech stack without imposing architectural constraints.
+      icon: ArrowMoveRight
+
+    - title: Built-in CLI
+      description: Transpile, manage, and automate database workflows right from your terminal with Bob's CLI.
+      icon: TerminalIcon
+
+    - title: Powerful Query Language
+      description: Create nested, grouped, and conditional queries without writing a single line of raw SQL.
+      icon: BoltIcon
+in_action:
+  title: See Bob in Action
+  description: Write expressive .bob code and let Bob handle the SQL generation for you.
+  options:
+    - Basic tables and queries
+    - Aggregations and filters
+    - Relationships and joins
+
+philosophy:
+  title: Philosophy
+  description: Bob is built on the belief that working with databases should be simple, expressive, and independent of any specific backend or framework.
+  principles:
+    - Simplicity First
+    - The syntax is intentionally minimal and readable to keep developers focused on what matters.
+    - Technology Agnostic
+    - Bob doesn't lock you into a specific language or framework—just clean database logic you can use anywhere.
+    - Human-Centered Design
+    - Models and queries should feel natural to write and easy to maintain, even years later.
+    - Clear structures and transparent logic help prevent hidden bugs and misunderstandings.
+    - Power Without Complexity
+    - Bob offers advanced querying and relationships without requiring deep SQL knowledge.
+
+types:
+  title: Types
+  description: Bob supports a variety of data types, including strings, numbers, booleans, and more.

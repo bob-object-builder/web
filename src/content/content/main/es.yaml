@@ -1,0 +1,56 @@
+welcome:
+  title: Conoce a <span class="text-primary">Bob</span>
+  description: Un transpiler declarativo y ligero que convierte el DSL de <span class="rounded bg-primary/60 border-1 border-primary px-2">bob</span> en código SQL para SQLite, MariaDB y PostgreSQL. Escribe menos código repetitivo y mantén una lógica de base de datos más limpia.
+code: |
+  $ bob -i users.bob -d sqlite -o users.sql <br />
+  ✨ users.bob se transpilo exitosamente → users.sql <br />
+  🚀 ¡SQL generado para la base de datos SQLite!
+start: Comenzar
+github:
+  claim: Github
+  href: "https://github.com/bob-object-builder/bob"
+claim:
+  why: ¿Por qué elegir Bob?
+  answer: Bob combina la simplicidad de una sintaxis moderna con el poder de SQL, ofreciéndote lo mejor de ambos mundos.
+  reasons:
+    - title: Sintaxis Declarativa
+      description: Define tablas, campos, relaciones y consultas en un formato DSL claro y fácil de leer.
+      icon: CodeIcon
+
+    - title: Soporte Multibase de Datos
+      description: Genera SQL para SQLite, MariaDB y PostgreSQL con un solo archivo .bob.
+      icon: DatabaseIcon
+
+    - title: Fácil de Aprender
+      description: La sintaxis de Bob está diseñada para ser intuitiva y fácil de aprender, accesible para desarrolladores de todos los niveles.
+      icon: WinkIcon
+
+    - title: ORM Horizontal
+      description: Usa Bob como un ORM basado en sintaxis que se integra con cualquier stack tecnológico sin imponer restricciones arquitectónicas.
+      icon: ArrowMoveRight
+
+    - title: CLI Integrada
+      description: Transpila, gestiona y automatiza flujos de trabajo de bases de datos directamente desde tu terminal con la CLI de Bob.
+      icon: TerminalIcon
+
+    - title: Lenguaje de Consultas Potente
+      description: Crea consultas anidadas, agrupadas y condicionales sin escribir una sola línea de SQL puro.
+      icon: BoltIcon
+
+philosophy:
+  title: Filosofía
+  description: Bob se basa en la creencia de que trabajar con bases de datos debe ser simple, expresivo e independiente de cualquier backend o framework específico.
+  principles:
+    - Simplicidad Primero
+    - La sintaxis es intencionalmente mínima y legible para mantener a los desarrolladores enfocados en lo que importa.
+    - Tecnológicamente Agnóstico
+    - Bob no te ata a un lenguaje o framework específico—solo lógica de base de datos limpia que puedes usar en cualquier parte.
+    - Diseño Centrado en las Personas
+    - Los modelos y consultas deben sentirse naturales de escribir y fáciles de mantener, incluso años después.
+    - Estructuras claras y lógica transparente ayudan a prevenir errores ocultos y malentendidos.
+    - Poder Sin Complejidad
+    - Bob ofrece consultas avanzadas y relaciones sin requerir un conocimiento profundo de SQL.
+
+types:
+  title: Types
+  description: Bob supports a variety of data types, including strings, numbers, booleans, and more.

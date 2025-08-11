@@ -1,0 +1,34 @@
+---
+const {
+    value,
+    id,
+    class: className,
+    editable = false,
+    color = "",
+} = Astro.props;
+---
+
+<section class={`flex flex-col ${className}`}>
+    <h3 class="flex bg-stone-950 pt-5 px-4">
+        <slot />
+    </h3>
+    {
+        editable ? (
+            <textarea
+                spellcheck="false"
+                autocorrect="off"
+                autocomplete="off"
+                autocapitalize="off"
+                id={id}
+                set:html={value}
+                class={`min-h-[696px] focus:!outline-none w-full field-sizing-content text-xs bg-stone-950 p-4 rounded-md ${className} ${color} h-full`}
+            />
+        ) : (
+            <pre
+                id={id}
+                class={`min-h-[696px] focus:!outline-none w-full field-sizing-content text-xs bg-stone-950 p-4 rounded-md ${className} ${color} h-full`}
+                set:html={value}
+            />
+        )
+    }
+</section>
