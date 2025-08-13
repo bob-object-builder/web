@@ -6,6 +6,7 @@ import Layout from "@/layouts/Layout.astro";
 import PointerIcon from "@/components/ui/icons/PointerIcon.astro";
 import getContent from "@/lib/i18n/get-content";
 import GithubIcon from "@/components/ui/icons/GithubIcon.astro";
+import WarningIcon from "@/components/ui/icons/WarningIcon.astro";
 import { importIcon } from "@/lib/import-icon";
 import PlayGround from "@/components/ui/PlayGround.astro";
 import TypesTable from "@/components/ui/TypesTable.astro";
@@ -20,6 +21,14 @@ const t = await getContent("main", locale);
         <div class="flex flex-col justify-center items-center gap-2">
             <BobLogo class="text-primary w-28" />
             <h1 class="text-4xl font-bold mb-4" set:html={t("welcome.title")} />
+        </div>
+
+        <div
+            class="bg-primary text-black px-4 py-4 sm:py-2 rounded-md text-center gap-3 text-lg my-8 font-semibold text-balance"
+        >
+            <WarningIcon class="block mx-auto sm:inline sm:mr-2 sm:w-10" />
+            {t("warning")}
+            <WarningIcon class="hidden sm:inline sm:ml-2 w-10" />
         </div>
         <p
             class="mb-8 max-w-3xl text-center text-xl sm:text-2xl mx-auto"

@@ -1,3 +1,4 @@
+warning: Bob is under development! This is just a small proof of concept.
 welcome:
   title: Meet <span class="text-primary">Bob</span>
   description: A lightweight declarative transpiler that converts <span class="rounded bg-primary/60 border-1 border-primary px-2">bob</span> DSL into SQL code for SQLite, MariaDB, and PostgreSQL. Write less boilerplate, maintain better database logic.
