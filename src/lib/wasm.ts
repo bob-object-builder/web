@@ -18,7 +18,7 @@ export function WASM(): Promise<any> {
     wasmLoadingPromise = (async () => {
       const go = new Go();
 
-      const response = await fetch("/public/scripts/bob.wasm");
+      const response = await fetch("/scripts/bob.wasm");
       if (!response.ok) {
         throw new Error(`Failed to fetch wasm: ${response.statusText}`);
       }
