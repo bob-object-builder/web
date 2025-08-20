@@ -10,6 +10,7 @@ import WarningIcon from "@/components/ui/icons/WarningIcon.astro";
 import { importIcon } from "@/lib/import-icon";
 import PlayGround from "@/components/ui/PlayGround.astro";
 import TypesTable from "@/components/ui/TypesTable.astro";
+import FileExplorer from "@/components/ui/FileExplorer.astro";
 
 const { locale } = Astro.props;
 
@@ -97,9 +98,26 @@ const t = await getContent("main", locale);
     </section>
     <section class="grid gap-12" id="playground">
         <PlayGround />
+
+        <p
+            class="text-xl text-center text-balance"
+            set:html={t("output.text")}
+        />
+
+        <div class="grid grid-cols-2 gap-4">
+            <FileExplorer class="text-primary" structure={t("output.sql")} />
+            <FileExplorer structure={t("output.bob")} />
+        </div>
+
         <TypesTable
             title={t("types.title")}
             description={t("types.description")}
         />
+    </section>
+
+    <section>
+        <h2 class="text-2xl font-bold text-center">
+            {t("howToWrite.title")}
+        </h2>
     </section>
 </Layout>
