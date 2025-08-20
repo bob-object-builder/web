@@ -94,6 +94,13 @@ const t = await getContent("main", locale);
             <p class="text-xl text-center text-balance">
                 {t("in_action.description")}
             </p>
+
+            <a
+                href="#how-to-write"
+                class="text-md text-primary hover:underline text-center"
+            >
+                {t("in_action.how_to_write")}
+            </a>
         </div>
     </section>
     <section class="grid gap-12" id="playground">
@@ -113,7 +120,7 @@ const t = await getContent("main", locale);
     <section id="how-to-write" class="scroll-mt-12 flex flex-col gap-12">
         <div>
             <h2 class="text-2xl font-bold text-center mb-6">
-                {t("howToWrite.title")}
+                {t("how_to_write.title")}
             </h2>
 
             <div class="flex flex-col gap-4">
@@ -123,7 +130,7 @@ const t = await getContent("main", locale);
                             <div class="bg-stone-950 p-4 rounded-lg">
                                 <code
                                     class="whitespace-pre-wrap block"
-                                    set:html={t(`howToWrite.${item}`)
+                                    set:html={t(`how_to_write.${item}`)
                                         .split("\n")
                                         .map((line: string) => {
                                             // Reemplazar tabs por padding

@@ -44,6 +44,7 @@ in_action:
     - Basic tables and queries
     - Aggregations and filters
     - Relationships and joins
+  how_to_write: "Want to understand how to write it? Go to introduction"
 
 philosophy:
   title: Philosophy
@@ -94,7 +95,7 @@ output:
             - name: get-product-by-id.sql
               type: file
 
-howToWrite:
+how_to_write:
   title: How to Write Bob Files
   description: Learn how to write Bob to define your database schema and queries.
 
