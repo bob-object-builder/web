@@ -3,8 +3,8 @@ welcome:
   title: Meet <span class="text-primary">Bob</span>
   description: A lightweight declarative transpiler that converts <span class="rounded bg-primary/60 border-1 border-primary px-2">bob</span> DSL into SQL code for SQLite, MariaDB, and PostgreSQL. Write less boilerplate, maintain better database logic.
 code: |
-  $ bob -i users.bob -d sqlite -o users.sql <br />
-  ✨ Successfully transpiled users.bob → users.sql <br />
+  $ bob -i users.bob -d sqlite -o ./sql/ <br />
+  ✨ Successfully transpiled <br />
   🚀 Generated SQL for SQLite database!
 start: Get started
 github:
@@ -62,3 +62,104 @@ philosophy:
 types:
   title: Types
   description: Bob supports a variety of data types, including strings, numbers, booleans, and more.
+
+output:
+  text: |
+    If you use the CLI, you can specify an output path (folder) for generating the project. <br>
+    Bob will analyze all your files and generate the SQL in the specified path,
+    separating tables and actions individually while preserving your original names.
+  sql:
+    - name: input
+      type: folder
+      children:
+        - name: user.bob
+          type: file
+        - name: product.bob
+          type: file
+        - name: get-user-by-name.bob
+          type: file
+        - name: get-product-by-id.bob
+          type: file
+  bob:
+    - name: output
+      type: folder
+      children:
+        - name: tables.sql
+          type: file
+        - name: actions
+          type: folder
+          children:
+            - name: get-user-by-name.sql
+              type: file
+            - name: get-product-by-id.sql
+              type: file
+
+howToWrite:
+  title: How to Write Bob Files
+  description: Learn how to write Bob to define your database schema and queries.
+
+  tables: |
+    table {tableName} {
+      {columnName} {columnType}
+    }
+
+  getters: |
+    get {tableName} {
+      {columnName} or * | ... to retrieve everything
+
+      # If you want to use and alias
+      {aliasName}: {columnName}
+
+      # Filtering
+      if {columnName} {operator} {value}
+      # You could concatenate multiple filters with the same operator to specified column name using && or ||
+      if {columnName} {operator} {value} && {value}
+      # to add and else you could use or above and if
+      or {columnName} {operator} {value} || {value}
+
+      # also you could use leftJoin using ->
+      -> {tableName} {unionColumnName, "id" by default} {
+        ...
+      }
+
+      # algo you could use subqueries
+      ${aliasName}: get {tableName} {
+        ...
+      }
+    }
+
+  setters: |
+    set {tableName} {
+      {columnName} {newValue}
+      # or
+      {columnName}: {newValue}
+
+      # Filtering
+      if {columnName} {operator} {value}
+      # You could concatenate multiple filters with the same operator to specified column name using && or ||
+      if {columnName} {operator} {value} && {value}
+      # to add and else you could use or above and if
+      or {columnName} {operator} {value} || {value}
+    }
+
+  inserts: |
+    new {tableName} {
+      {columnName} {newValue}
+      # or
+      {columnName}: {newValue}
+    }
+
+    # bulk version
+    new {tableName} {colunName} {colunName} ... {
+      {value} {value} ...
+    }
+
+  deletes: |
+    delete {tableName} {
+      # Filtering
+        if {columnName} {operator} {value}
+        # You could concatenate multiple filters with the same operator to specified column name using && or ||
+        if {columnName} {operator} {value} && {value}
+        # to add and else you could use or above and if
+        or {columnName} {operator} {value} || {value}
+    }

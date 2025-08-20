@@ -56,3 +56,33 @@ philosophy:
 types:
   title: Types
   description: Bob supports a variety of data types, including strings, numbers, booleans, and more.
+
+output:
+  sql:
+    - name: input
+      type: folder
+      children:
+        - name: user-table.bob
+          type: file
+        - name: product-table.bob
+          type: file
+        - name: actions
+          type: folder
+          children:
+            - name: get-user-name.bob
+              type: file
+            - name: get-product-by-id.bob
+              type: file
+  bob:
+    - name: output
+      type: folder
+      children:
+        - name: tables.sql
+          type: file
+        - name: actions
+          type: folder
+          children:
+            - name: get-user-name.sql
+              type: file
+            - name: get-product-by-id.sql
+              type: file

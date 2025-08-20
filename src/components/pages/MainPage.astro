@@ -108,16 +108,48 @@ const t = await getContent("main", locale);
             <FileExplorer class="text-primary" structure={t("output.sql")} />
             <FileExplorer structure={t("output.bob")} />
         </div>
+    </section>
+
+    <section id="how-to-write" class="scroll-mt-12 flex flex-col gap-12">
+        <div>
+            <h2 class="text-2xl font-bold text-center mb-6">
+                {t("howToWrite.title")}
+            </h2>
+
+            <div class="flex flex-col gap-4">
+                {
+                    ["tables", "getters", "setters", "inserts", "deletes"].map(
+                        (item) => (
+                            <div class="bg-stone-950 p-4 rounded-lg">
+                                <code
+                                    class="whitespace-pre-wrap block"
+                                    set:html={t(`howToWrite.${item}`)
+                                        .split("\n")
+                                        .map((line: string) => {
+                                            // Reemplazar tabs por padding
+                                            const withTabs = line.replace(
+                                                /\t/g,
+                                                '<span class="inline-block pl-4"></span>',
+                                            );
+
+                                            // Si la línea contiene #, añadir color
+                                            if (line.includes("#")) {
+                                                return `<span class="text-gray-600">${withTabs}</span>`;
+                                            }
+                                            return withTabs;
+                                        })
+                                        .join("\n")}
+                                />
+                            </div>
+                        ),
+                    )
+                }
+            </div>
+        </div>
 
         <TypesTable
             title={t("types.title")}
             description={t("types.description")}
         />
-    </section>
-
-    <section>
-        <h2 class="text-2xl font-bold text-center">
-            {t("howToWrite.title")}
-        </h2>
     </section>
 </Layout>
