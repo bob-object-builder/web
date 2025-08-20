@@ -108,22 +108,22 @@ how_to_write:
     get {tableName} {
       {columnName} or * | ... to retrieve everything
 
-      # If you want to use and alias
+      # Using an alias
       {aliasName}: {columnName}
 
       # Filtering
       if {columnName} {operator} {value}
-      # You could concatenate multiple filters with the same operator to specified column name using && or ||
+      # You can concatenate multiple filters with the same operator for a specific column using && or ||
       if {columnName} {operator} {value} && {value}
-      # to add and else you could use or above and if
+      # To add an alternative condition, you can use `or` above an `if`
       or {columnName} {operator} {value} || {value}
 
-      # also you could use leftJoin using ->
+      # You can also use left joins with ->
       -> {tableName} {unionColumnName, "id" by default} {
         ...
       }
 
-      # algo you could use subqueries
+      # You can also use subqueries
       ${aliasName}: get {tableName} {
         ...
       }
@@ -137,9 +137,9 @@ how_to_write:
 
       # Filtering
       if {columnName} {operator} {value}
-      # You could concatenate multiple filters with the same operator to specified column name using && or ||
+      # You can concatenate multiple filters with the same operator for a specific column using && or ||
       if {columnName} {operator} {value} && {value}
-      # to add and else you could use or above and if
+      # To add an alternative condition, you can use `or` above an `if`
       or {columnName} {operator} {value} || {value}
     }
 
@@ -150,17 +150,17 @@ how_to_write:
       {columnName}: {newValue}
     }
 
-    # bulk version
-    new {tableName} {colunName} {colunName} ... {
+    # Bulk version
+    new {tableName} {columnName} {columnName} ... {
       {value} {value} ...
     }
 
   deletes: |
     delete {tableName} {
       # Filtering
-        if {columnName} {operator} {value}
-        # You could concatenate multiple filters with the same operator to specified column name using && or ||
-        if {columnName} {operator} {value} && {value}
-        # to add and else you could use or above and if
-        or {columnName} {operator} {value} || {value}
+      if {columnName} {operator} {value}
+      # You can concatenate multiple filters with the same operator for a specific column using && or ||
+      if {columnName} {operator} {value} && {value}
+      # To add an alternative condition, you can use `or` above an `if`
+      or {columnName} {operator} {value} || {value}
     }
