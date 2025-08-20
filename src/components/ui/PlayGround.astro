@@ -54,6 +54,11 @@ get User {
     name
     email
     if email = "test@test.com"
+
+    profile: get Profile {
+        *
+        if avatar != ""
+    }
 }
 
 new User {
@@ -71,6 +76,10 @@ get User {
     -> Profile {
       avatar
     }
+}
+
+delete User {
+    if id = 1
 }`;
 
     async function handleWasm() {
@@ -78,6 +87,8 @@ get User {
         const i = $input.value || defaultQuery;
         if ($input) $input.value = i;
         const query = b(i);
+
+        console.log(query);
 
         if (!$output) return;
 
