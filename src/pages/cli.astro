@@ -1,0 +1,84 @@
+---
+import FileExplorer from "@/components/ui/FileExplorer.astro";
+import Github from "@/components/ui/Github.astro";
+import Icon from "@/components/ui/icons/Icon.astro";
+import Terminal from "@/components/ui/Terminal.astro";
+import Layout from "@/layouts/Layout.astro";
+import getContent from "@/lib/i18n/get-content";
+
+const t = await getContent("docs/cli");
+---
+
+<Layout>
+  <h1 class="text-white text-4xl font-bold text-center" set:html={t("title")} />
+
+  <div class="grid md:grid-cols-2 items-center justify-center">
+    <div class="grid grid-cols-[max-content_1fr] gap-4 p-6">
+      <span class="p-2 flex rounded-md gap-16">
+        <Icon name="SquareTerminal" class="text-bob w-14 h-14 -rotate-12" />
+      </span>
+      <span class="text-lg text-balance" set:html={t("terminal.claim")} />
+    </div>
+
+    <Terminal set:html={t("terminal.code")} />
+  </div>
+
+  <section
+    class="my-10 max-w-4xl w-full mx-auto border-4 border-black p-12 rounded-md"
+  >
+    <h3 class="text-2xl font-bold text-center mb-6">Command Flags</h3>
+    <div>
+      <div class="grid grid-cols-[.3fr_1fr_.15fr] w-full border-b-2 py-2 mb-4">
+        {
+          t("flags.table.headers").map((h: string) => (
+            <span class="font-bold text-lg">{h}</span>
+          ))
+        }
+      </div>
+      {
+        t("flags.list").map(
+          (f: {
+            flag: [string, string];
+            description: string;
+            optional: string;
+          }) => (
+            <div class="grid grid-cols-[.3fr_1fr_.15fr] w-full text-lg">
+              <span class="px-3 py-2 align-top whitespace-nowrap font-mono text-bob font-semibold">
+                {f.flag.map((f) => (
+                  <span class="mr-2">{f}</span>
+                ))}
+              </span>
+              <span
+                class="px-3 py-2 align-top text-neutral-200 text-balance"
+                set:html={f.description}
+              />
+              <span class="px-3 py-2 align-top mx-auto">
+                {f.optional ? (
+                  <Icon
+                    name="Check"
+                    class="bg-green-800 w-6 h-6 px-1 py-1 rounded text-xs uppercase tracking-wide"
+                  />
+                ) : (
+                  <Icon
+                    name="X"
+                    class="bg-rose-900 w-6 h-6 px-1 py-1 rounded text-xs uppercase tracking-wide"
+                  />
+                )}
+              </span>
+            </div>
+          ),
+        )
+      }
+    </div>
+  </section>
+
+  <h2 class="text-2xl uppercase text-center font-bold">
+    {t("output.title")}
+  </h2>
+  <div class="grid grid-cols-2 gap-4">
+    <FileExplorer class="text-bob" structure={t("files.sql")} />
+    <FileExplorer structure={t("files.bob")} />
+  </div>
+
+  <Github> Download it </Github>
+</Layout>

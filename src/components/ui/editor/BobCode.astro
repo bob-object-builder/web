@@ -1,0 +1,13 @@
+---
+import format from "@/lib/format";
+
+const { code } = Astro.props;
+const formatted = format(code);
+---
+
+<div class="grid">
+  <code
+    set:html={formatted}
+    class="whitespace-pre-wrap bg-black p-6 rounded-md"
+  />
+</div>

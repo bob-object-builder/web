@@ -1,0 +1,255 @@
+title: "@bob-kit/client"
+subtitle: Official Bob client for JavaScript/TypeScript
+
+disclaimer: |
+  <b>Disclaimer:</b> Bob is under development! Use at your own risk.
+
+description:
+  text: |
+    Official <b>Bob</b> client for consuming the <span class="font-bold text-bob/90">bob</span> DSL from <b>JavaScript/TypeScript</b>.
+    <br /><br />
+    This package loads Bob's runtime (WASM) and exposes a small API to:
+  items:
+    - Transpile your <span class="font-mono bg-bob/20 px-1 rounded">bob</span> input into SQL for a given engine (SQLite, MariaDB/MySQL, PostgreSQL).
+    - Automatically execute the generated SQL using a <span class="font-mono bg-bob/20 px-1 rounded">Driver</span> you provide.
+    - Optionally cache transpilation results.
+
+what_is_bob: |
+  <b>Bob</b> is a lightweight, declarative transpiler that lets you define database <b>schemas</b> and <b>queries</b> using a simple, human-readable DSL called <span class="font-mono bg-bob/20 px-1 rounded">bob</span>.
+  <br /><br />
+  Bob then converts those definitions into SQL for multiple engines such as <b>SQLite</b>, <b>MariaDB/MySQL</b>, and <b>PostgreSQL</b>.
+  <br /><br />
+  Instead of writing verbose SQL by hand, you describe tables, relationships, and queries concisely, and Bob generates the corresponding SQL.
+
+installation:
+  title: Installation
+  pnpm: |
+    <span class="font-mono bg-bob/20 px-2 py-1 rounded">pnpm add @bob-kit/client</span>
+  npm: |
+    <span class="font-mono bg-bob/20 px-2 py-1 rounded">npm i @bob-kit/client</span>
+  yarn: |
+    <span class="font-mono bg-bob/20 px-2 py-1 rounded">yarn add @bob-kit/client</span>
+
+environment:
+  title: Environment Requirements
+  description: |
+    Right now, <span class="font-mono bg-bob/20 px-1 rounded">@bob-kit/client</span> loads the WASM using Node APIs (<span class="font-mono">fs</span>, <span class="font-mono">vm</span>).
+    <br /><br />
+    That means it's currently <b>Node.js-oriented</b> (not browser) as implemented today.
+
+concepts:
+  title: "Concepts: Driver and Cache"
+  description:
+    text: |
+      The client needs a <span class="font-mono bg-bob/20 px-1 rounded">Driver</span> (from <span class="font-mono">@bob-kit/types</span>) to execute the generated SQL:
+    items:
+      - |
+        <b>driver</b>: target engine (<span class="font-mono">"sqlite" | "mariadb" | "mysql" | "postgres"</span>).
+      - |
+        <b>querier(query, ...params)</b>: async function that executes SQL (and returns rows for <span class="font-mono">SELECT</span>).
+      - |
+        <b>cache</b>: optional implementation to cache transpilation results (memory, redis, etc.).
+    footer: |
+      <br />
+      This package also exports a ready-to-use in-memory cache: <span class="font-mono bg-bob/20 px-1 rounded">MemoryCache</span>.
+
+drivers:
+  title: "Optional Drivers"
+  description:
+    text: |
+      Drivers are <b>optional packages</b> that you can install separately from the Bob ecosystem. They provide ready-to-use <span class="font-mono bg-bob/20 px-1 rounded">querier</span> implementations for different database engines.
+    items:
+      - |
+        <b><span class="font-mono">@bob-kit/sqlite</span></b>: Official SQLite driver. Install with <span class="font-mono">pnpm add @bob-kit/sqlite</span>, <span class="font-mono">npm i @bob-kit/sqlite</span>, or <span class="font-mono">yarn add @bob-kit/sqlite</span>.
+      - |
+        <b>PostgreSQL, MariaDB, and MySQL</b>: Official drivers are <b>pending</b> but coming soon. In the meantime, you're free to create your own driver libraries as long as they respect the <span class="font-mono bg-bob/20 px-1 rounded">querier</span> contract required by Bob.
+    footer: |
+      <br />
+      <b>Custom Drivers:</b> You can implement your own driver by creating a function that matches the <span class="font-mono">querier</span> interface: <span class="font-mono">(query: string, ...params: any[]) => Promise&lt;any[]&gt;</span>. This allows you to integrate Bob with any database or ORM that supports parameterized queries.
+
+quick_start:
+  title: Quick Start (Node + SQLite)
+  description: |
+    Complete example using <span class="font-mono">@bob-kit/sqlite</span> as the <span class="font-mono">querier</span>:
+  code: |
+    import bob from "@bob-kit/client";
+    import { MemoryCache } from "@bob-kit/client/cache";
+    import { sqlite } from "@bob-kit/sqlite";
+
+    const querier = sqlite(":memory:");
+
+    const client = bob({
+      driver: "sqlite",
+      querier,
+      cache: new MemoryCache(),
+    });
+
+    // 1) Define multiple tables in a single query
+    await client.query`
+      table Profile {
+        id id
+        avatar string
+      }
+
+      table Users {
+        id id
+        name string
+        lastName string
+        Profile
+      }
+    `;
+
+    // 2) Insert one entity
+    await client.query`
+      new Profile {
+        avatar "bear"
+      }
+    `;
+
+    // 3) Bulk insert with multiple rows and columns
+    await client.query`
+      new Users name          lastName      Profile.id {
+                "John"        "Doe"         1
+                "Mary"        "Jane"        3
+                "Robert"      "Smith"       3
+      }
+    `;
+
+    // 4) Create reusable query functions with types
+    const getUserByName = (name: string) => client.query`
+      get Users {
+        name
+        profile_id
+
+        -> Profile {
+            avatar
+        }
+
+        desc Profile.id
+      }
+    `;
+
+    const users = await getUserByName("John");
+
+examples:
+  joins:
+    title: Joins and Relationships
+    description: |
+      Join with related table:
+    code: |
+      // Join with related table
+      const usersWithProfiles = await client.query`
+        get Users {
+          id
+          name
+          lastName
+
+          -> Profile {
+            avatar
+          }
+        }
+      `;
+
+  filtering:
+    title: Filtering and Sorting
+    description: |
+      Filter and sort your queries:
+    code: |
+      const filteredUsers = await client.query`
+        get Users {
+          id
+          name
+          if name = "John" || "Mary"
+        }
+      `;
+
+      const sortedUsers = await client.query`
+        get Users {
+          id
+          name
+          desc id
+        }
+      `;
+
+  parameters:
+    title: Parameters
+    description: |
+      The API accepts parameters as arguments to <span class="font-mono">query(...)</span>. Internally, the template literal is converted to a string using <span class="font-mono">?</span> as the placeholder.
+    code: |
+      const userEmail = "ada@lovelace.dev"
+
+      const byEmail = await client.query`
+        get Users {
+          id
+          name
+          email
+          if email == ${userEmail}
+        }
+      `;
+
+api:
+  title: API Reference
+  bob_function:
+    title: "default export function bob(driver: Driver)"
+    description:
+      text: |
+        Creates a client instance.
+        <br /><br />
+        Returns an object with:
+      items:
+        - |
+          <b><span class="font-mono">query&lt;A&gt;(input, ...params): Promise&lt;A[]&gt;</span></b>: executes a <span class="font-mono">bob</span> input. You can destructure it for convenience: <span class="font-mono">const { query: b } = bob(...)</span>.
+        - |
+          <b><span class="font-mono">cache(id)(input, ...params): Promise&lt;A[]&gt;</span></b>: same as <span class="font-mono">query</span>, but caches the transpilation result under a fixed <span class="font-mono">id</span>.
+        - |
+          <b><span class="font-mono">factory.&lt;id&gt;(input, ...params): Promise&lt;A[]&gt;</span></b>: shortcut for <span class="font-mono">cache("&lt;id&gt;")(...)</span>.
+
+  bob_query:
+    title: bobQuery({ driver, input, id? })
+    description: |
+      Low-level function that only performs transpilation (and applies cache if present). You usually won't need it.
+
+  driver_interface:
+    title: "Driver Interface"
+    description:
+      text: |
+        The <span class="font-mono bg-bob/20 px-1 rounded">Driver</span> interface (from <span class="font-mono">@bob-kit/types</span>) defines the contract that all drivers must implement:
+      items:
+        - |
+          <b><span class="font-mono">driver</span></b>: string indicating the target engine (<span class="font-mono">"sqlite" | "mariadb" | "mysql" | "postgres"</span>).
+        - |
+          <b><span class="font-mono">querier(query: string, ...params: any[]): Promise&lt;any[]&gt;</span></b>: async function that executes SQL queries. For <span class="font-mono">SELECT</span> queries, it should return an array of rows. For other queries (INSERT, UPDATE, DELETE), it can return an empty array or the result of the operation.
+        - |
+          <b><span class="font-mono">cache</span></b>: optional cache implementation to store transpilation results (can be <span class="font-mono">MemoryCache</span>, Redis, or any custom implementation).
+      footer: |
+        <br />
+        <b>Note:</b> Drivers are optional packages that you can install separately. The official <span class="font-mono">@bob-kit/sqlite</span> driver is available now, while PostgreSQL, MariaDB, and MySQL drivers are pending. You can create your own driver libraries as long as they respect this interface contract.
+
+  cache_module:
+    title: "@bob-kit/client/cache"
+    description:
+      text: |
+        Includes:
+      items:
+        - name: "<b><span class=\"font-mono\">MemoryCache</span></b>"
+          description: in-memory (Map) cache for <span class="font-mono">BobQueryResult</span>.
+
+errors:
+  title: Errors
+  description:
+    text: |
+      When Bob returns a parsing/validation/transpilation error, the client throws <span class="font-mono bg-bob/20 px-1 rounded">BobError</span> with:
+    items:
+      - name: "<b>name</b>"
+        description: a value from <span class="font-mono">BobErrors</span> (from <span class="font-mono">@bob-kit/types/errors</span>)
+      - name: "<b>message</b>"
+        description: error details
+
+notes:
+  title: Important Notes
+  items:
+    - |
+      <b>Multiple actions</b>: if your input generates more than 1 SQL action, the client throws (<span class="font-mono">MultipleActions</span>).
+      The current flow assumes <b>0 or 1 action</b> per execution.
+    - |
+      <b>Table execution</b>: if the output includes <span class="font-mono">tables</span>, all of them are executed (in order) before the action/query.

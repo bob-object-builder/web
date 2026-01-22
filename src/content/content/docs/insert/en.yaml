@@ -1,0 +1,18 @@
+title: How to insert
+introduction: |
+  <b>Inserts in Bob are used to add new data into your tables.</b>
+  You can insert a single record by providing field values, or insert many records at once by specifying the fields and multiple rows of values.
+  
+example: |
+  # Insert a single record into 'User'
+  new User {
+    name  "John Doe"
+    email "johndoe@test.com"
+    age   18
+  }
+
+  # Insert multiple records into 'User'
+  new User name email age {
+    "John Doe" "johndoe@test.com" 18
+    "Mary Sue" "marysue@test.com" 20
+  }

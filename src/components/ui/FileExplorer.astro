@@ -1,73 +1,66 @@
 ---
-import FileIcon from "./icons/FileIcon.astro";
-import FolderIcon from "./icons/FolderIcon.astro";
+import Icon from "@/components/ui/icons/Icon.astro";
 
 type FileSystemNode = {
-    name: string;
-    type: "file" | "folder";
-    children?: FileSystemNode[];
+  name: string;
+  type: "file" | "folder";
+  children?: FileSystemNode[];
 };
 
 const {
-    structure,
-    class: className,
+  structure,
+  class: className,
 }: { structure?: FileSystemNode[]; class?: string } = Astro.props;
 ---
 
 <div
-    class={"p-4 rounded-lg shadow-md font-mono text-sm flex flex-col gap-4 bg-stone-950 select-none " +
-        className}
+  class={"p-4 rounded-lg shadow-md font-mono text-sm flex flex-col gap-4 bg-black select-none " +
+    className}
 >
-    {
-        structure?.map((node: FileSystemNode) => (
-            <div class="flex flex-col gap-2">
-                {node.type === "file" ? (
+  {
+    structure?.map((node: FileSystemNode) => (
+      <div class="flex flex-col gap-2">
+        {node.type === "file" ? (
+          <div class="pl-4 flex items-center gap-2">
+            <Icon name="FileIcon" size={16} />
+            <span>{node.name}</span>
+          </div>
+        ) : (
+          <details class="pl-4 flex flex-col gap-2" open>
+            <summary class="flex items-center gap-2 cursor-pointer">
+              <Icon name="FolderIcon" size={16} />
+              <span>{node.name}</span>
+            </summary>
+            <div class="ml-4 flex flex-col gap-2">
+              {node.children?.map((child) => (
+                <div>
+                  {child.type === "file" ? (
                     <div class="pl-4 flex items-center gap-2">
-                        <FileIcon size={16} />
-                        <span>{node.name}</span>
+                      <Icon name="FileIcon" size={16} />
+                      <span>{child.name}</span>
                     </div>
-                ) : (
-                    <details class="pl-4 flex flex-col gap-2" open>
-                        <summary class="flex items-center gap-2 cursor-pointer">
-                            <FolderIcon size={16} />
-                            <span>{node.name}</span>
-                        </summary>
-                        <div class="ml-4 flex flex-col gap-2">
-                            {node.children?.map((child) => (
-                                <div>
-                                    {child.type === "file" ? (
-                                        <div class="pl-4 flex items-center gap-2">
-                                            <FileIcon size={16} />
-                                            <span>{child.name}</span>
-                                        </div>
-                                    ) : (
-                                        <details class="pl-4" open>
-                                            <summary class="flex items-center gap-2 cursor-pointer">
-                                                <FolderIcon size={16} />
-                                                <span>{child.name}</span>
-                                            </summary>
-                                            <div class="ml-4 flex flex-col gap-2">
-                                                {child.children?.map(
-                                                    (grand) => (
-                                                        <div class="pl-4 flex items-center gap-2">
-                                                            <FileIcon
-                                                                size={16}
-                                                            />
-                                                            <span>
-                                                                {grand.name}
-                                                            </span>
-                                                        </div>
-                                                    ),
-                                                )}
-                                            </div>
-                                        </details>
-                                    )}
-                                </div>
-                            ))}
-                        </div>
+                  ) : (
+                    <details class="pl-4" open>
+                      <summary class="flex items-center gap-2 cursor-pointer">
+                        <Icon name="FolderIcon" size={16} />
+                        <span>{child.name}</span>
+                      </summary>
+                      <div class="ml-4 flex flex-col gap-2">
+                        {child.children?.map((grand) => (
+                          <div class="pl-4 flex items-center gap-2">
+                            <Icon name="FileIcon" size={16} />
+                            <span>{grand.name}</span>
+                          </div>
+                        ))}
+                      </div>
                     </details>
-                )}
+                  )}
+                </div>
+              ))}
             </div>
-        ))
-    }
+          </details>
+        )}
+      </div>
+    ))
+  }
 </div>

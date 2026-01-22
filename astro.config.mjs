@@ -1,20 +1,30 @@
 // @ts-check
-import { defineConfig } from "astro/config";
+import { defineConfig } from 'astro/config';
 import path from 'path';
+import { readFileSync } from 'fs';
+import { fileURLToPath } from 'url';
 
-import mdx from "@astrojs/mdx";
+import tailwindcss from '@tailwindcss/vite';
 
-import tailwindcss from "@tailwindcss/vite";
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const blackTheme = JSON.parse(
+  readFileSync(path.join(__dirname, 'src/themes/black-theme.json'), 'utf-8')
+);
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [mdx()],
+  markdown: {
+    shikiConfig: {
+      theme: blackTheme,
+      wrap: true,
+    },
+  },
   vite: {
     plugins: [tailwindcss()],
     resolve: {
       alias: {
         '@': path.resolve('./src'),
-      },
-    },
-  },
+      }
+    }
+  }
 });

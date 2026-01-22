@@ -1,0 +1,64 @@
+title: <span class="text-bob">CLI</span> TOOLS
+terminal:
+  claim: Try our custom <b>CLI</b> to transpile easily your bob queries into <b>SQL</b>. It's super easy to use and super fast.
+  code: |
+    $ bob -i ./input/ -d sqlite -o ./sql/ <br />
+    ✨ Successfully transpiled <br />
+    🚀 Generated SQL for SQLite database!
+files:
+  text: |
+    If you use the CLI, you can specify an output path (folder) for generating the project. <br>
+    Bob will analyze all your files and generate the SQL in the specified path,
+    separating tables and actions individually while preserving your original names.
+  sql:
+    - name: input
+      type: folder
+      children:
+        - name: user.bob
+          type: file
+        - name: product.bob
+          type: file
+        - name: get-user-by-name.bob
+          type: file
+        - name: get-product-by-id.bob
+          type: file
+  bob:
+    - name: output
+      type: folder
+      children:
+        - name: tables.sql
+          type: file
+        - name: actions
+          type: folder
+          children:
+            - name: get-user-by-name.sql
+              type: file
+            - name: get-product-by-id.sql
+              type: file
+
+flags:
+  table:
+    headers: [Flag, Description, Optional]
+  list:
+    - flag: [-i, --input]
+      description: Path to the input .bob file
+      optional: true
+
+    - flag: [-q, --query]
+      description: Direct query string input instead of file
+      optional: true
+
+    - flag: [-d, --driver]
+      description: "Database driver: mariadb, postgres, or sqlite"
+      optional: false
+
+    - flag: [-o, --output]
+      description: Output folder for SQL files <br>- create tables.sql file. <br>- create <b>actions/</b> folders with each action as a file. <br> (by default, output is printed to the terminal)
+      optional: true
+
+    - flag: [-v, --version]
+      description: Show Bob version and exit
+      optional: true
+
+output:
+  title: "Output example"

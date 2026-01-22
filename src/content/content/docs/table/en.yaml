@@ -1,0 +1,59 @@
+title: How to define tables
+introduction: |
+  <b>Tables in Bob define the structure of your data.</b> Each table consists of a <b>name</b> and a set of <b>fields</b>, where every field has a <b>type</b> and may include modifiers such as <i>unique</i>, <i>index</i>, <i>required</i>, or <i>optional</i>. Use tables to describe how your data is organized, the types it holds, and its relations to other entities. <b>This section explains how to create tables and introduces the supported data types.</b>
+
+example: |
+  # Define a 'User' table
+  table User {
+    # Primary identifier (id type)
+    id id                               
+    # Name field (string type), default value is "anon"
+    name string = "anon"                
+    # Email must be unique, indexed, and required
+    email string unique index required  
+    # Created_at field uses the 'current' temporal type, defaults to current time
+    # using 'current' type is equal to timestamp = @now
+    created_at current                  
+    # Optional foreign key referencing the 'Profile' table
+    Profile id optional                 
+  }
+
+  # Example of a related 'Profile' table
+  table Profile {
+    avatar string                    
+  }
+types:
+  numerics:
+    - int
+    - int8
+    - int16
+    - int32
+    - int64
+    - float32
+    - float64
+  text:
+    - string
+    - string8
+    - string16
+    - string32
+    - string64
+    - text
+    - blob
+  aliases:
+    -  type: id
+       attributes: 
+        - primary key
+        - default auto_increment
+    -  type: current
+       attributes:
+        - timestamp
+        - default current timestamp
+  booleans:
+    - boolean
+  temporal:
+    - time
+    - date
+    - datetime
+    - timestamp
+
+

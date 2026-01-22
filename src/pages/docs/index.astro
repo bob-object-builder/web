@@ -1,0 +1,50 @@
+---
+import Menu from "@/components/ui/docs/Menu.astro";
+import Delete from "@/components/ui/docs/parts/Delete.astro";
+import Get from "@/components/ui/docs/parts/Get.astro";
+import Insert from "@/components/ui/docs/parts/Insert.astro";
+import Raw from "@/components/ui/docs/parts/Raw.astro";
+import Table from "@/components/ui/docs/parts/Table.astro";
+import Update from "@/components/ui/docs/parts/Update.astro";
+import Layout from "@/layouts/Layout.astro";
+import getContent from "@/lib/i18n/get-content";
+
+const t = await getContent("docs");
+---
+
+<Layout>
+  <Menu />
+
+  <div>
+    <section class="mb-8 border-4 border-solid border-black p-8">
+      <div class="flex flex-col items-center justify-center gap-3 mb-6">
+        <h1
+          class="text-5xl md:text-6xl font-bold text-center bg-clip-text tracking-tight mb-2"
+        >
+          {t("title")}
+        </h1>
+        <span
+          class="inline-block bg-bob/10 text-bob/90 font-medium px-3 py-1 rounded-md text-sm mt-1 tracking-wide"
+        >
+          {t("subtitle")}
+        </span>
+      </div>
+      <p
+        class="text-lg md:text-xl text-center max-w-3xl mx-auto mb-8 text-neutral-200 leading-relaxed"
+        set:html={t("description")}
+      />
+    </section>
+
+    <Table />
+    <hr class="mt-8 mb-8 md:mb-12 text-stone-700" />
+    <Get />
+    <hr class="mt-8 mb-8 md:mb-12 text-stone-700" />
+    <Insert />
+    <hr class="mt-8 mb-8 md:mb-12 text-stone-700" />
+    <Update />
+    <hr class="mt-8 mb-8 md:mb-12 text-stone-700" />
+    <Delete />
+    <hr class="mt-8 mb-8 md:mb-12 text-stone-700" />
+    <Raw />
+  </div>
+</Layout>

@@ -1,0 +1,10 @@
+title: Bob Documentation
+subtitle: Your SQL, simplified
+description: |
+  Welcome to the <span class="font-bold text-bob/90">Bob</span> docs! Here
+  you'll find clear guides, concise examples, and everything you need to get
+  started with <b class="font-semibold">Bob</b>—a lightweight, declarative
+  DSL for SQL.&nbsp;
+  <br class="hidden md:inline" />
+  Browse the sections below to learn how to define tables, use intuitive data
+  types, and run powerful database queries faster, easier, and safer than ever.

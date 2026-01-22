@@ -1,12 +1,4 @@
-import { z, defineCollection } from "astro:content";
-
-const documentationCollection = defineCollection({
-  type: "content",
-  schema: z.object({
-    title: z.string(),
-    description: z.string(),
-  }),
-});
+import { defineCollection, z } from "astro:content";
 
 const contentCollection = defineCollection({
   type: "data",
@@ -14,6 +6,5 @@ const contentCollection = defineCollection({
 });
 
 export const collections = {
-  documentation: documentationCollection,
   content: contentCollection,
 };

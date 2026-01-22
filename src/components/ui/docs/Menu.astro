@@ -1,0 +1,46 @@
+<nav class="flex justify-center">
+  <ul
+    class="flex gap-6 bg-black/40 rounded-md px-6 py-3 shadow-md border-2 border-bob/20"
+  >
+    {
+      [
+        { href: "#table", label: "Table" },
+        { href: "#get", label: "Get" },
+        { href: "#insert", label: "Insert" },
+        { href: "#update", label: "Update" },
+        { href: "#delete", label: "Delete" },
+        { href: "#raw", label: "Raw" },
+      ].map(({ href, label }) => (
+        <li>
+          <a
+            href={href}
+            class="text-white hover:text-bob font-semibold transition-colors px-3 py-1 rounded-md"
+            data-hash-link={href}
+          >
+            {label}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>
+
+<script>
+  const updateActiveHashLink = () => {
+    const hash = window.location.hash;
+
+    document.querySelectorAll("a[data-hash-link]").forEach((a) => {
+      const href = a.getAttribute("href");
+
+      if (href === hash) {
+        a.classList.add("bg-bob/60", "text-white");
+      } else {
+        a.classList.remove("bg-bob/60", "text-white");
+      }
+    });
+  };
+
+  window.addEventListener("hashchange", updateActiveHashLink);
+
+  updateActiveHashLink();
+</script>

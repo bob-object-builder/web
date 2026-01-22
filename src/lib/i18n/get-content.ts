@@ -1,11 +1,7 @@
 import getLocaleEntry from "@/lib/i18n/get-locale-entry";
-import { locales, type Locale } from "@/lib/i18n/locales";
+import { type Locale } from "@/lib/i18n/locales";
 
-export async function getContent(id: string, locale: Locale) {
-  if (!locales[locale]) {
-    locale = "en";
-  }
-
+export async function getContent(id: string, locale: Locale = "en") {
   const content = await getLocaleEntry("content", id, locale);
 
   return (key: string) => {

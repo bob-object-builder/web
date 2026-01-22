@@ -1,0 +1,15 @@
+---
+import BobCode from "@/components/ui/editor/BobCode.astro";
+import getContent from "@/lib/i18n/get-content";
+
+const t = await getContent("docs/get");
+---
+
+<section id="get" class="grid scroll-m-8">
+  <div class="mb-12">
+    <h2 class="text-3xl font-bold text-center mb-6">{t("title")}</h2>
+    <p class="text-lg text-center text-balance" set:html={t("introduction")} />
+  </div>
+
+  <BobCode code={t("example")} />
+</section>

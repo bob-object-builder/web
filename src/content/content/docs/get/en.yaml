@@ -1,0 +1,46 @@
+title: How to define getters
+introduction: |
+  <b>Getters in Bob are used to retrieve data from tables in a flexible and expressive way.</b>
+  You can specify exactly which fields you want, add conditions to filter your results,
+  and even traverse relationships between tables by nesting getters. This section
+  explains how to use the <b>get</b> statement to obtain the data you need with examples
+  of filtering and nesting related data.
+
+example: |
+  # Retrieve fields from the 'User' table
+  get User {
+    id
+    name
+    email
+
+    # an alias is defined using a name before field
+    last_name: family_name
+
+    # 'meet' is a calculated field using a function. Here it concatenates "Hello " with the user's name.
+    # note: you still cannot reference fields previously saved in an alias.
+    meet: concat("Hello ", name)
+
+    # Filter users with a specific email address
+    if email = "test@test.com"
+
+    # You can nest getters to retrieve related data 
+    # note: referencing the parent is not currently supported
+    profile: get Profile {
+      if id = User->Profile.id
+      if avatar != "default.png"
+    }
+
+    # You can also use a join-like arrow syntax (->) to traverse relationships;
+    # by default, the connection between tables uses the 'id' field.
+    -> Profile { 
+      if avatar != "default.png"  
+    }
+
+    # algo youd could specify join field
+    -> Post uuid {
+      if upvotes > 100
+    }
+  }
+
+  # If you do empty query by default retrievews all fields
+  get User {}

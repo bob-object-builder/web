@@ -1,0 +1,309 @@
+---
+import TsCode from "@/components/ui/editor/TsCode.astro";
+import Layout from "@/layouts/Layout.astro";
+import getContent from "@/lib/i18n/get-content";
+
+const t = await getContent("sdk");
+---
+
+<Layout>
+  <!-- Header Section -->
+  <section class="border-4 border-solid border-black p-4 md:p-8 flex flex-col gap-12">
+    <div class="flex flex-col items-center justify-center gap-3 mb-4 md:mb-6">
+      <h1
+        class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-center bg-clip-text tracking-tight mb-2 px-4"
+      >
+        {t("title")}
+      </h1>
+      <span
+        class="inline-block bg-bob/10 text-bob/90 font-medium px-3 py-1 rounded-md text-xs sm:text-sm mt-1 tracking-wide"
+      >
+        {t("subtitle")}
+      </span>
+    </div>
+    
+    <div
+      class="text-base sm:text-lg md:text-xl text-center max-w-3xl mx-auto mb-6 md:mb-8 text-neutral-200 leading-relaxed px-4"
+      set:html={t("description.text")}
+    />
+    {t("description.items") && (
+      <ul class="list-disc list-outside mt-4 space-y-3 max-w-3xl mx-auto text-neutral-200 pl-4 md:pl-6 pr-4">
+        {t("description.items").map((item: string) => (
+          <li class="leading-relaxed text-sm sm:text-base" set:html={item} />
+        ))}
+      </ul>
+    )}
+  </section>
+
+  <!-- What is Bob Section -->
+  {t("what_is_bob") && (
+    <section class="border-2 border-bob/20 p-4 md:p-6 lg:p-8 rounded-md">
+      <div
+        class="text-base md:text-lg text-neutral-200 leading-relaxed space-y-4"
+        set:html={t("what_is_bob")}
+      />
+    </section>
+  )}
+
+  <!-- Installation Section -->
+  {t("installation") && (
+    <section class="md:px-4">
+      <h2 class="text-2xl sm:text-3xl font-bold text-center mb-4 md:mb-6">{t("installation.title")}</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 max-w-4xl mx-auto">
+        <div class="border-2 border-bob/20 p-3 md:p-4 rounded-md text-center">
+          <h3 class="font-semibold mb-2 text-sm md:text-base">pnpm</h3>
+          <div class="text-xs sm:text-sm" set:html={t("installation.pnpm")} />
+        </div>
+        <div class="border-2 border-bob/20 p-3 md:p-4 rounded-md text-center">
+          <h3 class="font-semibold mb-2 text-sm md:text-base">npm</h3>
+          <div class="text-xs sm:text-sm" set:html={t("installation.npm")} />
+        </div>
+        <div class="border-2 border-bob/20 p-3 md:p-4 rounded-md text-center sm:col-span-2 md:col-span-1">
+          <h3 class="font-semibold mb-2 text-sm md:text-base">yarn</h3>
+          <div class="text-xs sm:text-sm" set:html={t("installation.yarn")} />
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Environment Requirements Section -->
+  {t("environment") && (
+    <section class="border-2 border-bob/20 p-4 md:p-6 lg:p-8 rounded-md">
+      <h2 class="text-xl sm:text-2xl font-bold mb-4 md:mb-6">{t("environment.title")}</h2>
+      <div
+        class="text-neutral-200 leading-relaxed text-sm sm:text-base"
+        set:html={t("environment.description")}
+      />
+    </section>
+  )}
+
+  <!-- Concepts Section -->
+  {t("concepts") && (
+    <section class="border-2 border-bob/20 p-4 md:p-6 lg:p-8 rounded-md">
+      <h2 class="text-xl sm:text-2xl font-bold mb-4 md:mb-6">{t("concepts.title")}</h2>
+      <div
+        class="text-neutral-200 leading-relaxed mb-4 md:mb-6 text-sm sm:text-base"
+        set:html={t("concepts.description.text")}
+      />
+      {t("concepts.description.items") && Array.isArray(t("concepts.description.items")) && (
+        <ul class="list-disc list-outside mt-4 space-y-3 md:space-y-4 text-neutral-200 pl-4 md:pl-6 pr-2">
+          {t("concepts.description.items").map((item: string) => (
+            <li class="leading-relaxed text-sm sm:text-base" set:html={item} />
+          ))}
+        </ul>
+      )}
+      {t("concepts.description.footer") && (
+        <div
+          class="text-neutral-200 leading-relaxed mt-4 md:mt-6 text-sm sm:text-base"
+          set:html={t("concepts.description.footer")}
+        />
+      )}
+    </section>
+  )}
+
+  <!-- Drivers Section -->
+  {t("drivers") && (
+    <section class="border-2 border-bob/20 p-4 md:p-6 lg:p-8 rounded-md">
+      <h2 class="text-xl sm:text-2xl font-bold mb-4 md:mb-6">{t("drivers.title")}</h2>
+      <div
+        class="text-neutral-200 leading-relaxed mb-4 md:mb-6 text-sm sm:text-base"
+        set:html={t("drivers.description.text")}
+      />
+      {t("drivers.description.items") && Array.isArray(t("drivers.description.items")) && (
+        <ul class="list-disc list-outside mt-4 space-y-3 md:space-y-4 text-neutral-200 pl-4 md:pl-6 pr-2">
+          {t("drivers.description.items").map((item: string) => (
+            <li class="leading-relaxed text-sm sm:text-base" set:html={item} />
+          ))}
+        </ul>
+      )}
+      {t("drivers.description.footer") && (
+        <div
+          class="text-neutral-200 leading-relaxed mt-4 md:mt-6 text-sm sm:text-base"
+          set:html={t("drivers.description.footer")}
+        />
+      )}
+    </section>
+  )}
+
+  <!-- Quick Start Section -->
+  {t("quick_start") && (
+    <section class="mb-12 md:mb-16">
+      <h2 class="text-2xl sm:text-3xl font-bold text-center mb-6 md:mb-8">{t("quick_start.title")}</h2>
+      <div
+        class="text-base sm:text-lg text-center text-balance mb-6 md:mb-8 text-neutral-200 leading-relaxed max-w-3xl mx-auto"
+        set:html={t("quick_start.description")}
+      />
+      {t("quick_start.code") && (
+        <div class="overflow-x-auto">
+          <TsCode code={t("quick_start.code")} />
+        </div>
+      )}
+    </section>
+  )}
+
+  <!-- Examples Section -->
+  {t("examples") && (
+    <section>
+      <h2 class="text-2xl sm:text-3xl font-bold text-center mb-6 md:mb-8">Advanced Examples</h2>
+      
+      <div class="flex flex-col gap-12">
+
+      <!-- Joins Example -->
+      {t("examples.joins") && (
+        <div>
+          <h3 class="text-xl sm:text-2xl font-bold mb-4 md:mb-6">{t("examples.joins.title")}</h3>
+          <div
+            class="text-neutral-200 mb-4 md:mb-6 leading-relaxed text-sm sm:text-base"
+            set:html={t("examples.joins.description")}
+          />
+          {t("examples.joins.code") && (
+            <div class="overflow-x-auto">
+              <TsCode code={t("examples.joins.code")} />
+            </div>
+          )}
+        </div>
+      )}
+
+      <!-- Filtering Example -->
+      {t("examples.filtering") && (
+        <div>
+          <h3 class="text-xl sm:text-2xl font-bold mb-4 md:mb-6">{t("examples.filtering.title")}</h3>
+          <div
+            class="text-neutral-200 mb-4 md:mb-6 leading-relaxed text-sm sm:text-base"
+            set:html={t("examples.filtering.description")}
+          />
+          {t("examples.filtering.code") && (
+            <div class="overflow-x-auto">
+              <TsCode code={t("examples.filtering.code")} />
+            </div>
+          )}
+        </div>
+      )}
+
+      <!-- Parameters Example -->
+      {t("examples.parameters") && (
+        <div>
+          <h3 class="text-xl sm:text-2xl font-bold mb-4 md:mb-6">{t("examples.parameters.title")}</h3>
+          <div
+            class="text-neutral-200 mb-4 md:mb-6 leading-relaxed text-sm sm:text-base"
+            set:html={t("examples.parameters.description")}
+          />
+          {t("examples.parameters.code") && (
+            <div class="overflow-x-auto">
+              <TsCode code={t("examples.parameters.code")} />
+            </div>
+          )}
+        </div>
+      )}
+      </div>
+    </section>
+  )}
+
+  <!-- API Reference Section -->
+  {t("api") && (
+    <section class="border-2 border-bob/20 p-4 md:p-6 lg:p-8 rounded-md">
+      <h2 class="text-2xl sm:text-3xl font-bold text-center mb-6 md:mb-10">{t("api.title")}</h2>
+      
+      <!-- bob function -->
+      {t("api.bob_function") && (
+        <div class="mb-6 md:mb-10 pb-6 md:pb-10 border-b border-bob/10">
+          <h3 class="text-xl sm:text-2xl font-bold mb-4 md:mb-6">{t("api.bob_function.title")}</h3>
+          <div
+            class="text-neutral-200 leading-relaxed mb-4 md:mb-6 text-sm sm:text-base"
+            set:html={t("api.bob_function.description.text")}
+          />
+          {t("api.bob_function.description.items") && Array.isArray(t("api.bob_function.description.items")) && (
+            <ul class="list-disc list-outside mt-4 space-y-3 md:space-y-4 text-neutral-200 pl-4 md:pl-6 pr-2">
+              {t("api.bob_function.description.items").map((item: string) => (
+                <li class="leading-relaxed text-sm sm:text-base" set:html={item} />
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
+
+      <!-- bobQuery function -->
+      {t("api.bob_query") && (
+        <div class="mb-6 md:mb-10 pb-6 md:pb-10 border-b border-bob/10">
+          <h3 class="text-xl sm:text-2xl font-bold mb-4 md:mb-6">{t("api.bob_query.title")}</h3>
+          <div
+            class="text-neutral-200 leading-relaxed text-sm sm:text-base"
+            set:html={t("api.bob_query.description")}
+          />
+        </div>
+      )}
+
+      <!-- Driver Interface -->
+      {t("api.driver_interface") && (
+        <div class="mb-6 md:mb-10 pb-6 md:pb-10 border-b border-bob/10">
+          <h3 class="text-xl sm:text-2xl font-bold mb-4 md:mb-6">{t("api.driver_interface.title")}</h3>
+          <div
+            class="text-neutral-200 leading-relaxed mb-4 md:mb-6 text-sm sm:text-base"
+            set:html={t("api.driver_interface.description.text")}
+          />
+          {t("api.driver_interface.description.items") && Array.isArray(t("api.driver_interface.description.items")) && (
+            <ul class="list-disc list-outside mt-4 space-y-3 md:space-y-4 text-neutral-200 pl-4 md:pl-6 pr-2">
+              {t("api.driver_interface.description.items").map((item: string) => (
+                <li class="leading-relaxed text-sm sm:text-base" set:html={item} />
+              ))}
+            </ul>
+          )}
+          {t("api.driver_interface.description.footer") && (
+            <div
+              class="text-neutral-200 leading-relaxed mt-4 md:mt-6 text-sm sm:text-base"
+              set:html={t("api.driver_interface.description.footer")}
+            />
+          )}
+        </div>
+      )}
+
+      <!-- cache module -->
+      {t("api.cache_module") && (
+        <div class="mb-4 md:mb-6">
+          <h3 class="text-xl sm:text-2xl font-bold mb-4 md:mb-6">{t("api.cache_module.title")}</h3>
+          <div
+            class="text-neutral-200 leading-relaxed mb-4 md:mb-6 text-sm sm:text-base"
+            set:html={t("api.cache_module.description.text")}
+          />
+          {t("api.cache_module.description.items") && Array.isArray(t("api.cache_module.description.items")) && (
+            <ul class="list-disc list-outside mt-4 space-y-3 md:space-y-4 text-neutral-200 pl-4 md:pl-6 pr-2">
+              {t("api.cache_module.description.items").map((item: string) => (
+                <li class="leading-relaxed text-sm sm:text-base" set:html={item} />
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
+    </section>
+  )}
+
+  <!-- Errors Section -->
+  {t("errors") && (
+    <section class="border-2 border-red-500/20 p-4 md:p-6 lg:p-8 rounded-md">
+      <h2 class="text-xl sm:text-2xl font-bold mb-4 md:mb-6">{t("errors.title")}</h2>
+      <div
+        class="text-neutral-200 leading-relaxed mb-4 md:mb-6 text-sm sm:text-base"
+        set:html={t("errors.description.text")}
+      />
+      {t("errors.description.items") && Array.isArray(t("errors.description.items")) && (
+        <ul class="list-disc list-outside mt-4 space-y-3 md:space-y-4 text-neutral-200 pl-4 md:pl-6 pr-2">
+          {t("errors.description.items").map((item: { name: string, description: string }) => (
+            <li class="leading-relaxed text-sm sm:text-base" set:html={item.name + " " + item.description} />
+          ))}
+        </ul>
+      )}
+    </section>
+  )}
+
+  <!-- Important Notes Section -->
+  {t("notes") && (
+    <section class="border-2 border-yellow-500/20 p-4 md:p-6 lg:p-8 rounded-md">
+      <h2 class="text-xl sm:text-2xl font-bold mb-4 md:mb-6">{t("notes.title")}</h2>
+      <ul class="list-disc list-outside space-y-3 md:space-y-4 text-neutral-200 pl-4 md:pl-6 pr-2">
+        {t("notes.items")?.map((item: string) => (
+          <li class="leading-relaxed text-sm sm:text-base" set:html={item} />
+        ))}
+      </ul>
+    </section>
+  )}
+</Layout>

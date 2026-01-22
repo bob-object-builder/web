@@ -1,0 +1,147 @@
+---
+import { format } from "@/lib/format";
+import { query } from "@/components/ui/editor/query";
+---
+
+<section>
+  <select name="driver" id="driver" class="bg-stone-900 p-2 mb-2 rounded-md">
+    <option
+      selected
+      class="hover:font-bold bg-stone-900 hover:text-black"
+      value="sqlite">SQLite</option
+    >
+    <option
+      class="hover:font-bold bg-stone-900 hover:text-black"
+      value="mariadb">MariaDB</option
+    >
+    <option
+      class="hover:font-bold bg-stone-900 hover:text-black"
+      value="postgres">Postgres</option
+    >
+  </select>
+  <div class="grid md:grid-cols-2 gap-4">
+    <div
+      contenteditable="true"
+      id="input"
+      class="rounded-md p-8 bg-black whitespace-pre-wrap text-md"
+      set:html={format(query)}
+    />
+    <div
+      id="output"
+      class="rounded-md p-8 bg-black whitespace-pre-wrap text-md"
+    >
+    </div>
+  </div>
+</section>
+
+<script>
+  import { query as initialQuery } from "@/components/ui/editor/query";
+  import { format } from "@/lib/format";
+  import WASM from "@/lib/wasm";
+
+  type Driver = "sqlite" | "postgres" | "mariadb";
+  let driver: Driver = "sqlite";
+  const $driverInput = document.getElementById("driver") as HTMLSelectElement;
+  const $input = document.getElementById("input") as HTMLDivElement;
+  const $output = document.getElementById("output") as HTMLDivElement;
+
+  let wasm = await WASM(driver);
+
+  $driverInput.addEventListener("input", async (e) => {
+    const $select = e.currentTarget as HTMLSelectElement;
+    driver = $select.value as Driver;
+    wasm = await WASM(driver);
+    handleWasm();
+  });
+
+  $input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+
+      const sel = window.getSelection();
+      if (!sel || sel.rangeCount === 0) return;
+
+      const range = sel.getRangeAt(0);
+
+      range.deleteContents();
+
+      const textNode = document.createTextNode("\n");
+      range.insertNode(textNode);
+
+      range.setStartAfter(textNode);
+      range.collapse(true);
+
+      sel.removeAllRanges();
+      sel.addRange(range);
+    }
+  });
+
+  function saveCaret(el: HTMLDivElement) {
+    const sel = window.getSelection();
+    if (!sel || sel.rangeCount === 0) return null;
+
+    const range = sel.getRangeAt(0);
+    const pre = range.cloneRange();
+
+    pre.selectNodeContents(el);
+    pre.setEnd(range.endContainer, range.endOffset);
+
+    return pre.toString().length;
+  }
+
+  function restoreCaret(el: HTMLDivElement, pos: number) {
+    const sel = window.getSelection();
+    if (!sel) return;
+
+    const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+    let node;
+    let curr = 0;
+
+    while ((node = walker.nextNode())) {
+      const length = node.nodeValue?.length ?? 0;
+
+      if (curr + length >= pos) {
+        const range = document.createRange();
+        range.setStart(node, pos - curr);
+        range.collapse(true);
+
+        sel.removeAllRanges();
+        sel.addRange(range);
+        return;
+      }
+
+      curr += length;
+    }
+  }
+
+  function updateHighlight() {
+    const raw = $input.textContent || "";
+    const pos = saveCaret($input);
+
+    $input.innerHTML = format(raw);
+
+    if (pos !== null) restoreCaret($input, pos);
+  }
+
+  async function handleWasm() {
+    const raw = $input.textContent || "";
+
+    const result = wasm(raw);
+    const { error, value } = result;
+
+    if (error) {
+      $output.innerHTML = `<div class="bg-red-500/35 text-white rounded-md p-3 tracking-wide text-balance"><b class="text-[.95rem]">${error.name}</b>\n${error.message}</div>`;
+      return;
+    }
+
+    $output.textContent = `${value.tables.join("\n\n")}\n\n${value.actions.join("\n\n")}`;
+  }
+
+  $input.innerHTML = format(initialQuery);
+  handleWasm();
+
+  $input.addEventListener("input", () => {
+    updateHighlight();
+    handleWasm();
+  });
+</script>

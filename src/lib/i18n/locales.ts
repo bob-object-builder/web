@@ -1,7 +1,3 @@
-interface LocaleType {
-  [key: string]: string;
-}
-
 export const locales = {
   es: "Español",
   en: "English",

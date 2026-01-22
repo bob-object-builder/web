@@ -1,5 +1,125 @@
 ---
-import MainPage from "@/components/pages/MainPage.astro";
+import Editor from "@/components/ui/editor/Editor.astro";
+import FileExplorer from "@/components/ui/FileExplorer.astro";
+import Builder from "@/components/ui/icons/Builder.astro";
+import Icon from "@/components/ui/icons/Icon.astro";
+import Terminal from "@/components/ui/Terminal.astro";
+import Layout from "@/layouts/Layout.astro";
+import getContent from "@/lib/i18n/get-content";
+import { importIcon } from "@/lib/icons/import-icon";
+
+const t = await getContent("main");
 ---
 
-<MainPage locale={Astro.currentLocale} />
+<Layout>
+  <section class="grid grid-cols-2 items-center justify-center">
+    <Builder class="text-bob p-12" />
+    <div>
+      <h1
+        class="text-4xl font-bold mb-4 text-center"
+        set:html={t("welcome.title")}
+      />
+
+      <p
+        class="text-xl text-center text-balance"
+        set:html={t("welcome.description")}
+      />
+
+      <ul class="mt-6">
+        <li
+          class="max-w-max mx-auto flex items-center gap-3 bg-black/70 rounded-lg p-4 mb-3 shadow-xl"
+        >
+          <Icon
+            name="CircleCheck"
+            class="w-8 h-8 fill-green-500 text-black stroke-2 rounded-full drop-shadow-md"
+          />
+          <Icon
+            name="SquareTerminal"
+            class="text-bob w-8 h-8 -rotate-12 drop-shadow"
+          />
+          <span class="ml-2 text-md font-semibold text-white">
+            CLI you can use anywhere
+          </span>
+        </li>
+        <li
+          class="max-w-max mx-auto flex items-center gap-3 bg-black/70 rounded-lg p-4 shadow-xl"
+        >
+          <Icon
+            name="CircleCheck"
+            class="w-8 h-8 fill-green-500 text-black stroke-2 rounded-full drop-shadow-md"
+          />
+          <Icon
+            name="TypescriptLogo"
+            class="text-bob w-8 h-8 -rotate-12 drop-shadow"
+          />
+          <span class="ml-2 text-md font-semibold text-white">
+            Powerful JavaScript SDK for seamless integration
+          </span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <h2
+    class="text-white text-4xl font-bold text-center"
+    set:html={t("claim.why")}
+  />
+
+  <p class="text-xl text-center">
+    {t("claim.answer")}
+  </p>
+
+  <ul class="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-12">
+    {
+      t("claim.reasons").map(
+        async ({ title, description, icon }: { [key: string]: string }) => {
+          const Icon = await importIcon(icon);
+
+          return (
+            <li class="p-4 rounded-md border-bob/20 border-2 border-solid grid gap-3 bg-black">
+              <span class="bg-bob/60 inline-flex aspect-square rounded-md p-2 w-max">
+                {Icon && <Icon />}
+              </span>
+              <h3 class="text-md font-semibold text-balance">{title}</h3>
+              <p class="text-sm"> {description}</p>
+            </li>
+          );
+        }
+      )
+    }
+  </ul>
+
+  <section
+    class="border-4 border-solid border-black p-8 rounded-md flex flex-col gap-8"
+  >
+    <h2
+      class="text-white text-4xl font-bold text-center"
+      set:html={t("cli.title")}
+    />
+
+    <div class="grid md:grid-cols-2 items-center justify-center">
+      <div class="grid grid-cols-[max-content_1fr] gap-4 p-6">
+        <span class="p-2 flex rounded-md gap-16">
+          <Icon name="SquareTerminal" class="text-bob w-14 h-14 -rotate-12" />
+        </span>
+        <span class="text-lg text-balance" set:html={t("cli.terminal.claim")} />
+      </div>
+
+      <Terminal set:html={t("cli.terminal.code")} />
+    </div>
+
+    <div class="grid grid-cols-2 gap-4">
+      <FileExplorer class="text-bob" structure={t("cli.files.sql")} />
+      <FileExplorer structure={t("cli.files.bob")} />
+    </div>
+  </section>
+
+  <section class="flex flex-col gap-8">
+    <h2
+      class="text-white text-4xl font-bold text-center"
+      set:html={t("playground.title")}
+    />
+
+    <Editor />
+  </section>
+</Layout>
