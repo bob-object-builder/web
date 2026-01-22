@@ -8,7 +8,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const blackTheme = JSON.parse(
-  readFileSync(path.join(__dirname, 'src/themes/black-theme.json'), 'utf-8')
+  readFileSync(path.join(__dirname, './public/themes/black-theme.json'), 'utf-8')
 );
 
 // https://astro.build/config
