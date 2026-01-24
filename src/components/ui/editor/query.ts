@@ -13,6 +13,13 @@ table Users {
   Profiles id optional
 }
 
+table Posts {
+  title string
+  content string
+  rating int
+  Users
+}
+
 get Users {
   id
   name
@@ -39,6 +46,13 @@ get Users {
   -> Profiles {
     avatar
   }
+}
+
+get Posts {
+  rating
+  total_posts: count(id)
+  group rating
+  if count(id) > 10
 }
 
 delete Users {

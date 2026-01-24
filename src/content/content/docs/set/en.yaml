@@ -2,10 +2,10 @@ title: How to set data
 introduction: |
   <b>Set in Bob is used to update fields in records that already exist in your tables.</b>
   You can specify which fields to change and add conditions to update only certain records.
-  
+
 example: |
   # Update the 'name' field for users whose current name is "Anon"
-  set User {
+  set Users {
     name "Public"
     if name = "Anon"
   }

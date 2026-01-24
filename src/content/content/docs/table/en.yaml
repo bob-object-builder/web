@@ -3,8 +3,8 @@ introduction: |
   <b>Tables in Bob define the structure of your data.</b> Each table consists of a <b>name</b> and a set of <b>fields</b>, where every field has a <b>type</b> and may include modifiers such as <i>unique</i>, <i>index</i>, <i>required</i>, or <i>optional</i>. Use tables to describe how your data is organized, the types it holds, and its relations to other entities. <b>This section explains how to create tables and introduces the supported data types.</b>
 
 example: |
-  # Define a 'User' table
-  table User {
+  # Define a 'Users' table
+  table Users {
     # Primary identifier (id type)
     id id                               
     # Name field (string type), default value is "anon"
@@ -19,7 +19,7 @@ example: |
   }
 
   # Example of a related 'Profile' table
-  table Profile {
+  table Profiles {
     avatar string                    
   }
 types:
@@ -40,12 +40,12 @@ types:
     - text
     - blob
   aliases:
-    -  type: id
-       attributes: 
+    - type: id
+      attributes:
         - primary key
         - default auto_increment
-    -  type: current
-       attributes:
+    - type: current
+      attributes:
         - timestamp
         - default current timestamp
   booleans:
@@ -55,5 +55,3 @@ types:
     - date
     - datetime
     - timestamp
-
-

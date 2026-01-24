@@ -5,6 +5,6 @@ introduction: |
 
 example: |
   # Delete users whose current id is 1
-  delete User {
+  delete Users {
     if id = 1
   }
