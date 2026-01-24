@@ -1,16 +1,12 @@
 ---
-import { Code } from "astro/components";
 import bobTheme from "@/lib/theme";
+import { Code } from "astro/components";
 
 const { code } = Astro.props;
 ---
 
 <div class="grid">
   <div class="bg-black p-6 rounded-md">
-    <Code 
-      code={code} 
-      lang="ts" 
-      theme={bobTheme}
-    />
+    <Code code={code} lang="ts" theme={bobTheme as any} />
   </div>
 </div>
