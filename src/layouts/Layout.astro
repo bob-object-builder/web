@@ -2,7 +2,7 @@
 import Header from "@/components/ui/Header.astro";
 import Footer from "@/components/ui/Footer.astro";
 import "@/styles/global.tw.css";
-const { title = "Bob | Lightweight and declarative DSL for SQL" } = Astro.props;
+const { title = "Bob" } = Astro.props;
 ---
 
 <!doctype html>
@@ -12,7 +12,7 @@ const { title = "Bob | Lightweight and declarative DSL for SQL" } = Astro.props;
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
+    <title>{title + " | Lightweight and declarative DSL for SQL"}</title>
   </head>
   <body
     class="bg-stone-950 text-white min-h-dvh grid grid-rows-[max-content_1fr_max-content]"
