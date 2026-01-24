@@ -1,0 +1,10 @@
+title: How to use raw SQL
+introduction: |
+  **The `raw` block in Bob lets you write and embed direct SQL statements in your .bob files.**
+  This is useful when you need to run SQL queries that aren't directly supported by Bob's standard syntax, or you want precise control over the database operations.
+
+example: |
+  # Use the raw block to run a custom SQL query
+  raw {
+      SELECT * FROM User;
+  }

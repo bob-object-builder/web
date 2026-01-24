@@ -2,43 +2,63 @@ import "public/scripts/wasm_exec.js";
 
 declare global {
   interface Window {
-    bob: (arg: string) => any;
+    bob: (driver: string) => any;
   }
 }
 
-let bobInstance: any = null;
-let wasmLoadingPromise: Promise<any> | null = null;
+type Driver = 'postgres' | 'mariadb' | 'sqlite';
 
-export function WASM(): Promise<any> {
-  if (bobInstance) {
-    return Promise.resolve(bobInstance);
+let wasmReady: Promise<void> | null = null;
+
+const instances: Record<Driver, any | null> = {
+  postgres: null,
+  mariadb: null,
+  sqlite: null,
+};
+
+const loading: Partial<Record<Driver, Promise<any>>> = {};
+
+async function loadWasm(): Promise<void> {
+  if (wasmReady) return wasmReady;
+
+  wasmReady = (async () => {
+    const go = new Go();
+
+    const response = await fetch("/scripts/bob.wasm");
+    if (!response.ok) {
+      throw new Error(`Failed to fetch wasm: ${response.statusText}`);
+    }
+
+    const bytes = await response.arrayBuffer();
+    const result = await WebAssembly.instantiate(bytes, go.importObject);
+
+    go.run(result.instance);
+
+    if (typeof window.bob !== "function") {
+      throw new Error("Global function 'bob' is not defined after WASM init");
+    }
+  })();
+
+  return wasmReady;
+}
+
+export function WASM(driver: Driver = 'sqlite'): Promise<any> {
+  if (instances[driver]) {
+    return Promise.resolve(instances[driver]);
   }
 
-  if (!wasmLoadingPromise) {
-    wasmLoadingPromise = (async () => {
-      const go = new Go();
+  if (!loading[driver]) {
+    loading[driver] = (async () => {
+      await loadWasm();
 
-      const response = await fetch("/scripts/bob.wasm");
-      if (!response.ok) {
-        throw new Error(`Failed to fetch wasm: ${response.statusText}`);
-      }
+      const instance = window.bob(driver);
+      instances[driver] = instance;
 
-      const bytes = await response.arrayBuffer();
-      const result = await WebAssembly.instantiate(bytes, go.importObject);
-
-      go.run(result.instance);
-
-      if (typeof window.bob !== "function") {
-        throw new Error("Global function 'bob' is not defined after WASM init");
-      }
-
-      bobInstance = window.bob("sqlite");
-
-      return bobInstance;
+      return instance;
     })();
   }
 
-  return wasmLoadingPromise;
+  return loading[driver]!;
 }
 
 export default WASM;

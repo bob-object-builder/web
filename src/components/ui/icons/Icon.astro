@@ -1,0 +1,8 @@
+---
+import { importIcon } from "@/lib/icons/import-icon";
+
+const { icon, name } = Astro.props;
+const IconElement = await importIcon(name ?? icon);
+---
+
+<IconElement {...Astro.props} />

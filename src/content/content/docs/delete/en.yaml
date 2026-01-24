@@ -1,0 +1,10 @@
+title: How to delete data
+introduction: |
+  <b>Delete in Bob removes records from your tables.</b>
+  You can specify conditions to delete only certain records.
+
+example: |
+  # Delete users whose current id is 1
+  delete Users {
+    if id = 1
+  }

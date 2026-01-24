@@ -1,0 +1,74 @@
+---
+import Icon from "@/components/ui/icons/Icon.astro";
+import Warning from "@/components/ui/Warning.astro";
+
+const currentPath = Astro.url.pathname;
+
+const navLinks = [
+  { href: "/playground", label: "PLAYGROUND" },
+  { href: "/cli", label: "CLI" },
+  { href: "/sdk", label: "SDK" },
+  { href: "/docs", label: "DOCS" },
+];
+---
+
+<header
+  class="w-full flex flex-col items-center max-w-7xl mx-auto px-6 md:px-6 py-6 gap-2"
+>
+  <div
+    class="w-full grid grid-cols-[max-content_1fr] gap-8 bg-black shadow-gray-900 shadow-2xl rounded-md overflow-hidden border-bob border-solid"
+  >
+    <a
+      href="/"
+      class="text-white max-w-max px-5 py-3 flex items-center justify-center gap-8"
+    >
+      <Icon name="BobLogo" class="text-bob w-10" />
+      <span>
+        <span class="text-bob text-xl font-bold">Bob</span>
+        <span class="text-xl text-balance"> a new way to write <b>SQL</b></span>
+      </span>
+    </a>
+
+    <div class="flex justify-end gap-2">
+      {
+        navLinks.map(({ href, label }) => {
+          const isCurrent = currentPath.startsWith(href);
+
+          return (
+            <a
+              href={href}
+              class={`bg-stone-900 flex items-center justify-center font-bold aspect-square h-15 px-4
+                ${isCurrent ? "border-b-4 border-bob text-bob" : ""}
+              `}
+              aria-current={isCurrent ? "page" : undefined}
+            >
+              {label}
+            </a>
+          );
+        })
+      }
+
+      <a
+        href="https://www.npmjs.com/package/@bob-kit/client"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="bg-[#C12127] flex items-center justify-center font-bold aspect-square h-15"
+        title="NPM"
+      >
+        <Icon name="NpmLogo" class="w-8 h-8" />
+      </a>
+
+      <a
+        href="https://github.com/bob-object-builder"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="bg-[#501DAF] flex items-center justify-center font-bold aspect-square h-15"
+        title="GitHub"
+      >
+        <Icon name="Github" class="w-6 h-6" />
+      </a>
+    </div>
+  </div>
+
+  <Warning>Bob is under development! Use at your own risk.</Warning>
+</header>

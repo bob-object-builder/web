@@ -1,0 +1,68 @@
+---
+import Icon from "@/components/ui/icons/Icon.astro";
+const currentPath = Astro.url.pathname;
+
+const navLinks = [
+  { href: "/playground", label: "PLAYGROUND" },
+  { href: "/cli", label: "CLI" },
+  { href: "/sdk", label: "SDK" },
+  { href: "/docs", label: "DOCS" },
+];
+---
+
+<footer
+  class="bg-black pt-6 pb-12 flex flex-col items-center justify-center gap-4"
+>
+  <a href="/"> <Icon name="BobLogo" class="h-16 w-16 text-bob" /></a>
+  <span class="text-xl flex flex-col items-center gap-1">
+    <span>
+      <span class="text-bob font-bold">Bob</span>
+      <span> a new way to write SQL</span>
+    </span>
+
+    <nav class="flex flex-wrap gap-4 mt-4">
+      {
+        navLinks.map(({ href, label }) => {
+          const isCurrent = currentPath.startsWith(href);
+
+          return (
+            <a
+              class:list={[
+                "py-1 px-3 border rounded-md text-sm select-none",
+                isCurrent
+                  ? "text-bob !pointer-none pointer-events-none"
+                  : "text-gray-500 hover:text-white",
+              ]}
+              href={href}
+            >
+              {label}
+            </a>
+          );
+        })
+      }
+    </nav>
+
+    <span class="flex gap-3 items-center justify-center mt-4 w-full">
+      <a
+        href="https://www.npmjs.com/package/@bob-kit/client"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="bg-[#C12127] flex items-center justify-center rounded-md aspect-square p-2 transition hover:scale-110 focus:outline-none focus:ring-2 focus:ring-bob w-14 h-14"
+        title="NPM"
+        aria-label="Bob on npm"
+      >
+        <Icon name="NpmLogo" class="w-12 h-12" />
+      </a>
+      <a
+        href="https://github.com/bob-object-builder"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="bg-[#501DAF] flex items-center justify-center rounded-md aspect-square p-2 transition hover:scale-110 focus:outline-none focus:ring-2 focus:ring-bob w-14 h-14"
+        title="GitHub"
+        aria-label="Bob on GitHub"
+      >
+        <Icon name="Github" class="w-10 h-10" />
+      </a>
+    </span>
+  </span>
+</footer>

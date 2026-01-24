@@ -1,31 +1,28 @@
 ---
+import Header from "@/components/ui/Header.astro";
+import Footer from "@/components/ui/Footer.astro";
 import "@/styles/global.tw.css";
+const { title = "Bob" } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width" />
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        <meta name="generator" content={Astro.generator} />
-        <title>Bob | Lightweight and declarative DSL for SQL</title>
-    </head>
-    <body class="bg-stone-950">
-        <main
-            class="max-w-11/12 lg:max-w-screen-lg mx-auto py-12 text-white grid gap-12 pb-32"
-        >
-            <slot />
-        </main>
-    </body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title + " | Lightweight and declarative DSL for SQL"}</title>
+  </head>
+  <body
+    class="bg-stone-950 text-white min-h-dvh grid grid-rows-[max-content_1fr_max-content]"
+  >
+    <Header />
+    <div class="max-w-7xl w-full mx-auto px-6 md:px-6 py-6">
+      <main class="flex flex-col gap-8 md:gap-16 py-6 h-full">
+        <slot />
+      </main>
+    </div>
+    <Footer />
+  </body>
 </html>
-
-<style>
-    html,
-    body {
-        margin: 0;
-        width: 100%;
-        height: 100%;
-        background-color: black;
-    }
-</style>
