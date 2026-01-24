@@ -7,6 +7,7 @@ import Terminal from "@/components/ui/Terminal.astro";
 import Layout from "@/layouts/Layout.astro";
 import getContent from "@/lib/i18n/get-content";
 import { importIcon } from "@/lib/icons/import-icon";
+import { query } from "@/components/ui/editor/query";
 
 const t = await getContent("main");
 ---
@@ -84,7 +85,7 @@ const t = await getContent("main");
               <p class="text-sm"> {description}</p>
             </li>
           );
-        }
+        },
       )
     }
   </ul>
@@ -120,6 +121,6 @@ const t = await getContent("main");
       set:html={t("playground.title")}
     />
 
-    <Editor />
+    <Editor query={query} />
   </section>
 </Layout>

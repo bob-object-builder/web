@@ -1,9 +1,9 @@
 ---
 import { format } from "@/lib/format";
-import { query } from "@/components/ui/editor/query";
+const { query = "# Welcome to playground" } = Astro.props;
 ---
 
-<section>
+<section class="h-full mb-24">
   <select name="driver" id="driver" class="bg-stone-900 p-2 mb-2 rounded-md">
     <option
       selected
@@ -19,7 +19,7 @@ import { query } from "@/components/ui/editor/query";
       value="postgres">Postgres</option
     >
   </select>
-  <div class="grid md:grid-cols-2 gap-4">
+  <div class="grid md:grid-cols-2 gap-4 h-full">
     <div
       contenteditable="true"
       id="input"
@@ -35,7 +35,6 @@ import { query } from "@/components/ui/editor/query";
 </section>
 
 <script>
-  import { query as initialQuery } from "@/components/ui/editor/query";
   import { format } from "@/lib/format";
   import WASM from "@/lib/wasm";
 
@@ -55,6 +54,27 @@ import { query } from "@/components/ui/editor/query";
   });
 
   $input.addEventListener("keydown", (e) => {
+    if (e.key === "Tab") {
+      e.preventDefault();
+
+      const sel = window.getSelection();
+      if (!sel || sel.rangeCount === 0) return;
+      const range = sel.getRangeAt(0);
+
+      const tabNode = document.createTextNode("  ");
+      range.insertNode(tabNode);
+
+      range.setStartAfter(tabNode);
+      range.collapse(true);
+
+      sel.removeAllRanges();
+      sel.addRange(range);
+
+      updateHighlight();
+      handleWasm();
+      return;
+    }
+
     if (e.key === "Enter") {
       e.preventDefault();
 
@@ -124,7 +144,7 @@ import { query } from "@/components/ui/editor/query";
   }
 
   async function handleWasm() {
-    const raw = $input.textContent || "";
+    const raw = $input.textContent?.trim() || "";
 
     const result = wasm(raw);
     const { error, value } = result;
@@ -134,10 +154,13 @@ import { query } from "@/components/ui/editor/query";
       return;
     }
 
-    $output.textContent = `${value.tables.join("\n\n")}\n\n${value.actions.join("\n\n")}`;
+    $output.textContent =
+      `${value.tables.join("\n\n")}\n\n${value.actions.join("\n\n")}`.trimStart();
   }
 
-  $input.innerHTML = format(initialQuery);
+  $input.innerHTML = format(
+    $input.textContent?.trim() ?? "# Welcome to playground",
+  );
   handleWasm();
 
   $input.addEventListener("input", () => {
