@@ -2,7 +2,7 @@
 import { defineConfig } from 'astro/config';
 import path from 'path';
 import tailwindcss from '@tailwindcss/vite';
-import theme from '@/lib/theme';
+import theme from './src/lib/theme';
 
 // https://astro.build/config
 export default defineConfig({
