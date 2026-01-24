@@ -137,7 +137,6 @@ examples:
     description: |
       Join with related table:
     code: |
-      // Join with related table
       const usersWithProfiles = await client.query`
         get Users {
           id
@@ -231,7 +230,7 @@ api:
       text: |
         Includes:
       items:
-        - name: "<b><span class=\"font-mono\">MemoryCache</span></b>"
+        - name: '<b><span class="font-mono">MemoryCache</span></b>'
           description: in-memory (Map) cache for <span class="font-mono">BobQueryResult</span>.
 
 errors:
