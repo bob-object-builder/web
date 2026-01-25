@@ -179,14 +179,13 @@ examples:
     code: |
       const userEmail = "ada@lovelace.dev"
 
-      const byEmail = await client.query`
+      const getUserByName = (name: string) => client.query<{ name: string }>(`
         get Users {
-          id
           name
-          email
-          if email == "${userEmail}"
-        }
-      `;
+          if name = ?
+        }`, 
+        name
+      );
 
 api:
   title: API Reference
