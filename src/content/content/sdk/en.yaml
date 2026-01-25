@@ -184,7 +184,7 @@ examples:
           id
           name
           email
-          if email == ${userEmail}
+          if email == "${userEmail}"
         }
       `;
 
