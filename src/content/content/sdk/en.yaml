@@ -179,12 +179,12 @@ examples:
     code: |
       const userEmail = "ada@lovelace.dev"
 
-      const getUserByName = (name: string) => client.query<{ name: string }>(`
+      const getUserByEmail = (name: string) => client.query<{ name: string }>(`
         get Users {
-          name
-          if name = ?
+          email
+          if email = ?
         }`, 
-        name
+        userEmail
       );
 
 api:
