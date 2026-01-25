@@ -126,6 +126,8 @@ quick_start:
         }
 
         desc Profile.id
+
+        if name = "${name}"
       }
     `;
 
