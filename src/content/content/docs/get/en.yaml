@@ -40,6 +40,9 @@ example: |
     -> Posts {
       if upvotes > 100
     }
+
+    # Limit results to 10 users; the second parameter is the offset (optional)
+    limit 10 5
   }
 
   # GROUP BY and aggregation: 

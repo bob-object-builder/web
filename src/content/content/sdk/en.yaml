@@ -126,6 +126,8 @@ quick_start:
         }
 
         desc Profile.id
+
+        if name = "${name}"
       }
     `;
 
@@ -177,14 +179,13 @@ examples:
     code: |
       const userEmail = "ada@lovelace.dev"
 
-      const byEmail = await client.query`
+      const getUserByEmail = (name: string) => client.query<{ name: string }>(`
         get Users {
-          id
-          name
           email
-          if email == ${userEmail}
-        }
-      `;
+          if email = ?
+        }`, 
+        userEmail
+      );
 
 api:
   title: API Reference
