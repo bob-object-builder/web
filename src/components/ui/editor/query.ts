@@ -10,6 +10,10 @@ table Users {
   name string
   email string unique index
   created_at current
+  role string
+
+  if role = "admin" || "editor" || "guest"
+
   Profiles id optional
 }
 
@@ -17,6 +21,10 @@ table Posts {
   title string
   content string
   rating int
+
+  if rating >= 0
+  if rating <= 5
+
   Users
 }
 
